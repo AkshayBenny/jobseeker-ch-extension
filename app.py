@@ -6,7 +6,7 @@ import nltk
 nltk.download('punkt')
 text_to_summarize = ""
 sentence_count = 0
-json_data = open("training_booklet.json")
+json_data = open("data.json")
 parsed_json_data = json.load(json_data)
 for sentence in parsed_json_data.items():
     text_to_summarize = text_to_summarize + " " + str(sentence[1])
