@@ -1,118 +1,61 @@
-document.getElementById('fetchJob').addEventListener('click', async () => {
-	chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-		// Execute the script in the current tab
-		const [{ result: jobData }] = await chrome.scripting.executeScript({
-			target: { tabId: tabs[0].id },
-			// Wrap the async function so that its result can be returned
-			function: async () => {
-				// Include the waitForElement helper within the page context
-				async function waitForElement(selector, timeout = 3000) {
-					return new Promise((resolve) => {
-						const intervalTime = 100
-						let elapsed = 0
-						const interval = setInterval(() => {
-							const element = document.querySelector(selector)
-							if (element) {
-								clearInterval(interval)
-								resolve(element)
-							}
-							elapsed += intervalTime
-							if (elapsed >= timeout) {
-								clearInterval(interval)
-								resolve(null)
-							}
-						}, intervalTime)
-					})
+// Event listener for saving job details (already exists)
+document.getElementById('fetchJob').addEventListener('click', () => {
+	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+		chrome.tabs.sendMessage(
+			tabs[0].id,
+			{ action: 'getJobDetails' },
+			(response) => {
+				if (chrome.runtime.lastError || !response) {
+					console.error(
+						'Error extracting job details:',
+						chrome.runtime.lastError
+							? chrome.runtime.lastError.message
+							: 'No response'
+					)
+					alert(
+						'Unable to extract job details. Please ensure you are on a valid job listing page.'
+					)
+					return
 				}
-
-				// Use the same extraction function as defined above
-				async function extractJobDetails() {
-					let jobTitle = 'Not Found'
-					let company = 'Not Found'
-					let deadline = 'Not Found'
-					let applyLink = window.location.href
-
-					if (window.location.hostname.includes('indeed.com')) {
-						let jobElement = document.querySelector(
-							'h1[data-testid="jobsearch-JobInfoHeader-title"] span'
-						)
-						if (jobElement) {
-							jobTitle = jobElement.innerText.trim()
-						}
-						let companyElement = await waitForElement(
-							'[data-testid="inlineHeader-companyName"] a',
-							3000
-						)
-						if (companyElement) {
-							company = companyElement.innerText.trim()
-						}
-						let applyElement = document.querySelector(
-							'#applyButtonLinkContainer button[buttontype="primary"]'
-						)
-						if (applyElement) {
-							applyLink = applyElement.getAttribute('href')
-							if (!applyLink.startsWith('http')) {
-								applyLink = `https://uk.indeed.com${applyLink}`
-							}
-						}
-					} else if (
-						window.location.hostname.includes('cv-library.co.uk')
-					) {
-						let companyElement = document.querySelector(
-							'span[data-jd-company] a'
-						)
-						if (companyElement) {
-							company = companyElement.innerText.trim()
-						}
-						let expiryElement = document.querySelector(
-							'span.text--semibold.text--medium.sm-no'
-						)
-						if (expiryElement) {
-							deadline = expiryElement.innerText.trim()
-						}
-						let jobElement =
-							document.querySelector('h1, .job-title')
-						if (jobElement) {
-							jobTitle = jobElement.innerText.trim()
-						}
-						let applyElement =
-							document.querySelector('.apply-button a')
-						if (applyElement) {
-							applyLink = applyElement.href
-						}
-					} else {
-						let companyElement = document.querySelector(
-							'.company-name, .employer'
-						)
-						if (companyElement) {
-							company = companyElement.innerText.trim()
-						}
-						let deadlineElement = document.querySelector(
-							'.apply-by, .deadline'
-						)
-						if (deadlineElement) {
-							deadline = deadlineElement.innerText.trim()
-						}
-						let jobElement =
-							document.querySelector('h1, .job-title')
-						if (jobElement) {
-							jobTitle = jobElement.innerText.trim()
-						}
-						let applyElement = document.querySelector(
-							'.apply-button a, .apply-link'
-						)
-						if (applyElement) {
-							applyLink = applyElement.href
-						}
+				// Forward the job details to the background script
+				chrome.runtime.sendMessage(
+					{ action: 'saveJob', data: response },
+					(bgResponse) => {
+						console.log('Response from background:', bgResponse)
 					}
-
-					return { jobTitle, company, deadline, applyLink }
-				}
-				return await extractJobDetails()
-			},
-		})
-
-		// Send the extracted job data to the background script
-		chrome.runtime.sendMessage({ action: 'saveJob', data: jobData })
+				)
+			}
+		)
 	})
 })
+
+// Logout functionality
+document.getElementById('logout').addEventListener('click', () => {
+	logoutUser()
+})
+
+function logoutUser() {
+	chrome.identity.getAuthToken({ interactive: false }, (token) => {
+		if (chrome.runtime.lastError || !token) {
+			console.error(
+				'No token found or error occurred:',
+				chrome.runtime.lastError ? chrome.runtime.lastError.message : ''
+			)
+			return
+		}
+		// Revoke the token via Google’s revocation endpoint
+		fetch('https://accounts.google.com/o/oauth2/revoke?token=' + token)
+			.then(() => {
+				// Then remove it from the cache
+				chrome.identity.removeCachedAuthToken({ token: token }, () => {
+					console.log('User logged out. Token removed and revoked.')
+					alert(
+						'You have been logged out. The next action will require you to sign in again.'
+					)
+				})
+			})
+			.catch((err) => {
+				console.error('Error revoking token:', err)
+			})
+	})
+}
