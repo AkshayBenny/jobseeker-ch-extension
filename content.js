@@ -83,27 +83,62 @@ async function extractJobDetails() {
 		case window.location.hostname.includes('linkedin.com'):
 			{
 				// LinkedIn extraction
-				// Extract company name from the element with class "job-details-jobs-unified-top-card__company-name" and its child <a>
 				const companyElement = document.querySelector(
 					'.job-details-jobs-unified-top-card__company-name a'
 				)
 				if (companyElement) {
 					company = companyElement.innerText.trim()
 				}
-				// Extract job title from the element with class "job-details-jobs-unified-top-card__job-title"
-				// and the nested <h1> > <a>
 				const jobTitleElement = document.querySelector(
-					'.job-details-jobs-unified-top-card__job-title h1 a'
+					'.job-details-jobs-unified-top-card__job-title h1'
 				)
 				if (jobTitleElement) {
 					jobTitle = jobTitleElement.innerText.trim()
 				}
-				// LinkedIn might not provide a clear deadline value, so we'll keep it as 'Not Found'
-				// Optionally, if there's an apply button available with a known selector, you can extract its URL:
-				// const applyElement = document.querySelector('.jobs-apply-button');
-				// if (applyElement && applyElement.href) {
-				//     applyLink = applyElement.href;
-				// }
+
+				// Determine if the job posting uses "Easy Apply" or an external application link
+				const applyButton = document.querySelector(
+					'.jobs-apply-button--top-card button'
+				)
+				if (applyButton) {
+					const ariaLabel = applyButton.getAttribute('aria-label')
+					if (ariaLabel && ariaLabel.includes('on company website')) {
+						// External application link
+						// Attempt to extract the URL from the button's attributes
+						const applyButtonParent = applyButton.closest('a')
+						if (applyButtonParent && applyButtonParent.href) {
+							applyLink = applyButtonParent.href
+						} else {
+							// Fallback: Notify the user or handle accordingly
+							console.log('External application URL not found.')
+						}
+					} else {
+						// Easy Apply
+						applyLink = window.location.href
+					}
+				}
+			}
+			break
+
+		case window.location.hostname.includes('reed.co.uk'):
+			{
+				// Reed.co.uk extraction
+				const jobTitleElement = document.querySelector(
+					'div[data-qa="job-title"]'
+				)
+				if (jobTitleElement) {
+					jobTitle = jobTitleElement.innerText.trim()
+				}
+				const companyElement = document.querySelector(
+					'div[data-qa="job-posted-by"]'
+				)
+				if (companyElement) {
+					const companyText = companyElement.innerText.trim()
+					const byIndex = companyText.lastIndexOf(' by ')
+					if (byIndex !== -1) {
+						company = companyText.substring(byIndex + 4)
+					}
+				}
 			}
 			break
 
