@@ -1,19 +1,23 @@
-<!-- options.html -->
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Job Seeker Setup</title>
+		<title>Job Seeker</title>
 		<script
-			src="options.js"
+			src="popup.js"
 			defer></script>
 	</head>
 	<body>
-		<h2>Job Seeker Setup</h2>
+		<h2>Job Seeker</h2>
+		<!-- This is the Save Job button -->
+		<button id="fetchJob">Save Job</button>
+		<button id="logout">Log Out</button>
 		<p>
-			This will create a new Google Sheet to store your job applications.
+			<a
+				href="options.html"
+				target="_blank"
+				>Setup your Google Sheet</a
+			>
 		</p>
-		<button id="createSheet">Create New Sheet</button>
-		<p id="status"></p>
 	</body>
 </html>

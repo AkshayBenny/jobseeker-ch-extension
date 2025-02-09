@@ -1,8 +1,15 @@
-// options.js
 document.getElementById('createSheet').addEventListener('click', async () => {
 	document.getElementById('status').innerText = 'Creating spreadsheet...'
 
-	// Get OAuth token
+	// Get the custom spreadsheet name from the input field.
+	// If the field is empty, default to "My Job Applications".
+	const nameInput = document.getElementById('spreadsheetName')
+	const spreadsheetTitle =
+		nameInput && nameInput.value.trim() !== ''
+			? nameInput.value.trim()
+			: 'My Job Applications'
+
+	// Get OAuth token (interactive if necessary)
 	chrome.identity.getAuthToken({ interactive: true }, async (token) => {
 		if (chrome.runtime.lastError || !token) {
 			document.getElementById('status').innerText =
@@ -10,7 +17,7 @@ document.getElementById('createSheet').addEventListener('click', async () => {
 			return
 		}
 
-		// Call Google Sheets API to create a new spreadsheet
+		// Call the Google Sheets API to create a new spreadsheet with the custom title.
 		try {
 			const response = await fetch(
 				'https://sheets.googleapis.com/v4/spreadsheets',
@@ -22,7 +29,7 @@ document.getElementById('createSheet').addEventListener('click', async () => {
 					},
 					body: JSON.stringify({
 						properties: {
-							title: 'My Job Applications',
+							title: spreadsheetTitle, // Use the user-specified title here.
 						},
 						sheets: [
 							{

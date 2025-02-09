@@ -17,7 +17,7 @@ document.getElementById('fetchJob').addEventListener('click', () => {
 					)
 					return
 				}
-				// Forward the job details to the background script
+				// Forward job details to the background script to save them.
 				chrome.runtime.sendMessage(
 					{ action: 'saveJob', data: response },
 					(bgResponse) => {
