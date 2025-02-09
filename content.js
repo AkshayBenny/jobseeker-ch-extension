@@ -20,7 +20,7 @@ async function waitForElement(selector, timeout = 3000) {
 		}, intervalTime)
 	})
 }
-
+// parse datime for deadline col so user can sort it
 async function extractJobDetails() {
 	let jobTitle = 'Not Found'
 	let company = 'Not Found'

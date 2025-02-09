@@ -1,6 +1,11 @@
-// options.js
 document.getElementById('createSheet').addEventListener('click', async () => {
 	document.getElementById('status').innerText = 'Creating spreadsheet...'
+
+	// Retrieve the spreadsheet name from the input field.
+	// Defaults to "My Job Applications" if left empty.
+	const spreadsheetName =
+		document.getElementById('spreadsheetName').value ||
+		'My Job Applications'
 
 	// Get OAuth token
 	chrome.identity.getAuthToken({ interactive: true }, async (token) => {
@@ -10,7 +15,7 @@ document.getElementById('createSheet').addEventListener('click', async () => {
 			return
 		}
 
-		// Call Google Sheets API to create a new spreadsheet
+		// Call Google Sheets API to create a new spreadsheet with the provided name
 		try {
 			const response = await fetch(
 				'https://sheets.googleapis.com/v4/spreadsheets',
@@ -22,7 +27,7 @@ document.getElementById('createSheet').addEventListener('click', async () => {
 					},
 					body: JSON.stringify({
 						properties: {
-							title: 'My Job Applications',
+							title: spreadsheetName,
 						},
 						sheets: [
 							{
