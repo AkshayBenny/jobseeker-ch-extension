@@ -8,7 +8,14 @@
 		"48": "icons/icon.png",
 		"128": "icons/icon.png"
 	},
-	"permissions": ["scripting", "activeTab", "storage", "tabs"],
+	"oauth2": {
+		"client_id": "541489426340-q51js3q18j5hc8s4729fudh5hr57s241.apps.googleusercontent.com",
+		"scopes": [
+			"https://www.googleapis.com/auth/spreadsheets",
+			"https://www.googleapis.com/auth/userinfo.email"
+		]
+	},
+	"permissions": ["identity", "storage", "scripting", "activeTab", "tabs"],
 	"host_permissions": ["https://*/*"],
 	"background": {
 		"service_worker": "background.js"
