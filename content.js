@@ -1,3 +1,6 @@
+// content.js
+console.log('Content script loaded on', window.location.href)
+
 // Helper function: Waits for an element to appear in the DOM
 async function waitForElement(selector, timeout = 3000) {
 	return new Promise((resolve) => {
@@ -25,15 +28,13 @@ async function extractJobDetails() {
 	let applyLink = window.location.href // Default URL
 
 	if (window.location.hostname.includes('indeed.com')) {
-		// Job Title Extraction
+		// Indeed extraction
 		let jobElement = document.querySelector(
 			'h1[data-testid="jobsearch-JobInfoHeader-title"] span'
 		)
 		if (jobElement) {
 			jobTitle = jobElement.innerText.trim()
 		}
-
-		// Asynchronously wait for the company element to appear
 		let companyElement = await waitForElement(
 			'[data-testid="inlineHeader-companyName"] a',
 			3000
@@ -41,8 +42,6 @@ async function extractJobDetails() {
 		if (companyElement) {
 			company = companyElement.innerText.trim()
 		}
-
-		// Extract the apply link
 		let applyElement = document.querySelector(
 			'#applyButtonLinkContainer button[buttontype="primary"]'
 		)
@@ -53,7 +52,7 @@ async function extractJobDetails() {
 			}
 		}
 	} else if (window.location.hostname.includes('cv-library.co.uk')) {
-		// CV-Library extraction remains the same
+		// CV-Library extraction
 		let companyElement = document.querySelector('span[data-jd-company] a')
 		if (companyElement) {
 			company = companyElement.innerText.trim()
@@ -96,3 +95,13 @@ async function extractJobDetails() {
 
 	return { jobTitle, company, deadline, applyLink }
 }
+
+// Listen for messages from the popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+	if (message.action === 'getJobDetails') {
+		extractJobDetails().then((result) => {
+			sendResponse(result)
+		})
+		return true // Will send response asynchronously.
+	}
+})
