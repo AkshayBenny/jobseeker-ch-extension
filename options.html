@@ -2,24 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Job Seeker Setup</title>
-		<script
-			src="options.js"
-			defer></script>
+		<title>Job Seeker Options</title>
 	</head>
 	<body>
-		<h2>Job Seeker Setup</h2>
-		<p>
-			This will create a new Google Sheet to store your job applications.
-		</p>
-		<!-- Added input field for custom spreadsheet name -->
-		<label for="spreadsheetName">Spreadsheet Name:</label>
-		<input
-			type="text"
-			id="spreadsheetName"
-			value="My Job Applications" />
-		<br />
-		<button id="createSheet">Create New Sheet</button>
-		<p id="status"></p>
+		<div id="root"></div>
+		<script
+			type="module"
+			src="./src/options/main.jsx"></script>
 	</body>
 </html>
