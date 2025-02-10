@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './popup.css'
-import { handleLogout, handleSaveJob } from '../utils/popupUtils'
-import NotLoggedInView from '../components/NotLoggedIn'
-import LoggedInCreateSpreadSheetView from '../components/LoggedInCreateSpreadSheetView'
+import NotLoggedInView from '../components/NotLoggedInView'
 import SaveJobView from '../components/SaveJobView'
+import CreateSpreadSheetView from '../components/CreateSpreadSheetView'
+import JobSavedView from '../components/JobSavedView'
 
 export default function Popup() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -13,6 +13,7 @@ export default function Popup() {
 	)
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
+	const [savedJob, setSavedJob] = useState(null)
 
 	// When the component mounts, check if we already have a spreadsheetId stored.
 	useEffect(() => {
@@ -48,7 +49,7 @@ export default function Popup() {
 
 			{/* Logged in but no spreadsheet created: show create spreadsheet UI */}
 			{isLoggedIn && !spreadsheetId && !loading && (
-				<LoggedInCreateSpreadSheetView
+				<CreateSpreadSheetView
 					spreadsheetName={spreadsheetName}
 					setSpreadsheetName={setSpreadsheetName}
 					setLoading={setLoading}
@@ -58,11 +59,19 @@ export default function Popup() {
 			)}
 
 			{/* Logged in and spreadsheet exists: show Save Job and Logout buttons */}
-			{isLoggedIn && spreadsheetId && !loading && (
+			{isLoggedIn && spreadsheetId && !savedJob && !loading && (
 				<SaveJobView
 					setError={setError}
 					setIsLoggedIn={setIsLoggedIn}
 					setSpreadsheetId={setSpreadsheetId}
+					setSavedJob={setSavedJob}
+				/>
+			)}
+
+			{isLoggedIn && spreadsheetId && savedJob && !loading && (
+				<JobSavedView
+					savedJob={savedJob}
+					spreadsheetId={spreadsheetId}
 				/>
 			)}
 		</div>

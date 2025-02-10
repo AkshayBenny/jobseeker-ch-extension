@@ -4,10 +4,15 @@ export default function SaveJobView({
 	setError,
 	setIsLoggedIn,
 	setSpreadsheetId,
+	setSavedJob,
 }) {
 	return (
 		<div>
-			<button onClick={() => handleSaveJob(setError)}>Save Job</button>
+			<p>Sheet Created</p>
+			<p>Start saving jobs with a single click.</p>
+			<button onClick={() => handleSaveJob(setSavedJob, setError)}>
+				Save Job
+			</button>
 			<button
 				onClick={() =>
 					handleLogout(setIsLoggedIn, setSpreadsheetId, setError)

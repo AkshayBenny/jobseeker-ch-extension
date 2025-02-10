@@ -126,7 +126,7 @@ const handleCreateSpreadsheet = (
 }
 
 // Save job details (calls the background script to append job info)
-const handleSaveJob = (setError) => {
+const handleSaveJob = (setSavedJob, setError) => {
 	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 		chrome.tabs.sendMessage(
 			tabs[0].id,
@@ -140,7 +140,8 @@ const handleSaveJob = (setError) => {
 					{ action: 'saveJob', data: jobDetails },
 					(response) => {
 						if (response && response.status === 'success') {
-							alert('Job saved successfully!')
+							setSavedJob(jobDetails)
+							console.error(jobDetails)
 						} else {
 							setError('Failed to save job.')
 						}

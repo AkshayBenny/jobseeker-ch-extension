@@ -14,7 +14,7 @@ export default function NotLoggedInView({
 				onClick={() =>
 					handleLogin(setLoading, setIsLoggedIn, setError)
 				}>
-				Sign in with Google
+				Signup with Google
 			</button>
 		</div>
 	)
