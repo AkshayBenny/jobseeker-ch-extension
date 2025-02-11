@@ -167,10 +167,10 @@ async function extractJobDetails() {
 			if (companyElement) {
 				company = companyElement.innerText.trim()
 			}
-			let deadlineElement = document.querySelector('.apply-by, .deadline')
-			if (deadlineElement) {
-				deadline = deadlineElement.innerText.trim()
-			}
+			// let deadlineElement = document.querySelector('.apply-by, .deadline')
+			// if (deadlineElement) {
+			// 	deadline = deadlineElement.innerText.trim()
+			// }
 			let jobElement = document.querySelector('h1, .job-title')
 			if (jobElement) {
 				jobTitle = jobElement.innerText.trim()
@@ -184,7 +184,7 @@ async function extractJobDetails() {
 		}
 	}
 
-	return { jobTitle, company, deadline, applyLink }
+	return { jobTitle, company, applyLink }
 }
 
 // Listen for messages from the popup
