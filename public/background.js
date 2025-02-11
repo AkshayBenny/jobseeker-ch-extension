@@ -1,4 +1,3 @@
-// background.js
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === 'saveJob') {
 		// Retrieve the user's spreadsheet ID from storage

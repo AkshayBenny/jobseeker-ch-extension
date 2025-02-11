@@ -103,17 +103,15 @@ async function extractJobDetails() {
 				if (applyButton) {
 					const ariaLabel = applyButton.getAttribute('aria-label')
 					if (ariaLabel && ariaLabel.includes('on company website')) {
-						// External application link
-						// Attempt to extract the URL from the button's attributes
+						// External application link: try to get the URL from a parent anchor
 						const applyButtonParent = applyButton.closest('a')
 						if (applyButtonParent && applyButtonParent.href) {
 							applyLink = applyButtonParent.href
 						} else {
-							// Fallback: Notify the user or handle accordingly
 							console.log('External application URL not found.')
 						}
 					} else {
-						// Easy Apply
+						// Easy Apply: use the current page URL
 						applyLink = window.location.href
 					}
 				}
@@ -139,6 +137,25 @@ async function extractJobDetails() {
 						company = companyText.substring(byIndex + 4)
 					}
 				}
+			}
+			break
+
+		case window.location.hostname.includes('totaljobs.com'):
+			{
+				// Totaljobs extraction
+				let jobElement = document.querySelector(
+					'h1[data-genesis-element="TEXT"][data-at="header-job-title"]'
+				)
+				if (jobElement) {
+					jobTitle = jobElement.innerText.trim()
+				}
+				let companyElement = document.querySelector(
+					'li[data-genesis-element="TEXT"][data-at="metadata-company-name"] a span[data-genesis-element="TEXT"] span'
+				)
+				if (companyElement) {
+					company = companyElement.innerText.trim()
+				}
+				applyLink = window.location.href
 			}
 			break
 
@@ -176,6 +193,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		extractJobDetails().then((result) => {
 			sendResponse(result)
 		})
-		return true // Will send response asynchronously.
+		return true // Asynchronous response indicator
 	}
 })
