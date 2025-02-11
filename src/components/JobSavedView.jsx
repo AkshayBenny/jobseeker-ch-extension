@@ -7,7 +7,6 @@ const PopupContainer = styled.div`
 	width: 260px;
 	background: #1e1e1e;
 	color: white;
-	/* border-radius: 12px; */
 	padding: 15px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
@@ -52,35 +51,41 @@ const Heading = styled.h2`
 	margin-top: 10px;
 `
 
-const JobDetails = styled.div`
-	text-align: left;
-	font-size: 13px;
-	color: #ddd;
+const JobTable = styled.table`
+	width: 100%;
+	border-collapse: collapse;
 	margin: 10px 0;
 `
 
-const DetailRow = styled.p`
-	margin: 5px 0;
-	font-size: 13px;
-	display: flex;
-	align-items: center;
-	justify-content: start;
+const JobRow = styled.tr``
 
-	strong {
-		font-weight: bold;
-		color: white;
-	}
+const PropertyCell = styled.td`
+	font-weight: bold;
+	color: white;
+	padding: 4px 8px;
+	white-space: nowrap;
+	text-align: start;
+	vertical-align: top; /* Align content to the top */
 `
 
+const ValueCell = styled.td`
+	font-size: 13px;
+	color: #ddd;
+	padding: 4px 8px;
+	word-break: break-all;
+	text-align: start;
+	vertical-align: top; /* Align content to the top */
+`
 const TruncatedLink = styled.a`
 	color: #4c9aff;
 	text-decoration: none;
-	word-break: break-all;
-	display: inline-block;
+	display: -webkit-box;
 	max-width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	-webkit-line-clamp: 2; /* Limit to 2 lines */
+	-webkit-box-orient: vertical; /* Specify vertical orientation */
+	word-break: break-word; /* Allow long words to break */
 
 	&:hover {
 		text-decoration: underline;
@@ -108,7 +113,7 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 		return <p>No job details available.</p>
 	}
 
-	const { company, jobTitle, applyLink, deadline } = savedJob
+	const { company, jobTitle, applyLink } = savedJob
 	const sheetUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`
 	const truncatedApplyLink =
 		applyLink.length > 30 ? `${applyLink.substring(0, 30)}...` : applyLink
@@ -134,26 +139,32 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 				Job Saved <span>🔥</span>
 			</Heading>
 
-			<JobDetails>
-				<DetailRow>
-					<strong>Company :</strong> {company}
-				</DetailRow>
-				<DetailRow>
-					<strong>Job Title :</strong> {jobTitle}
-				</DetailRow>
-				{/* <DetailRow>
-					<strong>Deadline :</strong> {deadline}
-				</DetailRow> */}
-				<DetailRow>
-					<strong>Apply Link :</strong>{' '}
-					<TruncatedLink
-						href={applyLink}
-						target='_blank'
-						rel='noopener noreferrer'>
-						{truncatedApplyLink}
-					</TruncatedLink>
-				</DetailRow>
-			</JobDetails>
+			<JobTable>
+				<tbody>
+					<JobRow>
+						<PropertyCell>Company</PropertyCell>
+						<PropertyCell>:</PropertyCell>
+						<ValueCell>{company}</ValueCell>
+					</JobRow>
+					<JobRow>
+						<PropertyCell>Job Title</PropertyCell>
+						<PropertyCell>:</PropertyCell>
+						<ValueCell>{jobTitle}</ValueCell>
+					</JobRow>
+					<JobRow>
+						<PropertyCell>Apply Link</PropertyCell>
+						<PropertyCell>:</PropertyCell>
+						<ValueCell>
+							<TruncatedLink
+								href={applyLink}
+								target='_blank'
+								rel='noopener noreferrer'>
+								{truncatedApplyLink}
+							</TruncatedLink>
+						</ValueCell>
+					</JobRow>
+				</tbody>
+			</JobTable>
 
 			<ViewSheetButton onClick={() => window.open(sheetUrl, '_blank')}>
 				View in Sheet
