@@ -77,23 +77,7 @@ const handleCreateSpreadsheet = (
 											},
 											{
 												userEnteredValue: {
-													stringValue: 'Deadline',
-												},
-												userEnteredFormat: {
-													textFormat: { bold: true },
-												},
-											},
-											{
-												userEnteredValue: {
 													stringValue: 'Apply Link',
-												},
-												userEnteredFormat: {
-													textFormat: { bold: true },
-												},
-											},
-											{
-												userEnteredValue: {
-													stringValue: 'Timestamp',
 												},
 												userEnteredFormat: {
 													textFormat: { bold: true },
