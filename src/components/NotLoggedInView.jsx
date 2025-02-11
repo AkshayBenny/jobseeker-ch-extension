@@ -14,7 +14,7 @@ const PopupContainer = styled.div`
 	width: 260px;
 	background: #1e1e1e;
 	color: white;
-	border-radius: 12px;
+	/* border-radius: 12px; */
 	padding: 15px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;

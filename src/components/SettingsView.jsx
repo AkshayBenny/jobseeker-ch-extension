@@ -1,7 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { FaTimes, FaCog } from 'react-icons/fa'
-import { handleCloseExtension, handleCreateNewSheet, handleLogout } from '../utils/popupUtils'
+import {
+	handleCloseExtension,
+	handleCreateNewSheet,
+	handleLogout,
+} from '../utils/popupUtils'
 
 const PopupContainer = styled.div`
 	width: 260px;
@@ -153,7 +157,12 @@ export default function SettingsView({
 			</WarningText>
 			<LogoutButton
 				onClick={() =>
-					handleLogout(setIsLoggedIn, setSpreadsheetId, setError)
+					handleLogout(
+						setIsLoggedIn,
+						setSpreadsheetId,
+						setShowSettings,
+						setError
+					)
 				}>
 				Logout
 			</LogoutButton>
