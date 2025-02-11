@@ -5,13 +5,16 @@ import SaveJobView from '../components/SaveJobView'
 import CreateSpreadSheetView from '../components/CreateSpreadSheetView'
 import JobSavedView from '../components/JobSavedView'
 import SettingsView from '../components/SettingsView'
+import Loader from '../components/Loader'
 
 export default function Popup() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
 	const [spreadsheetId, setSpreadsheetId] = useState(null)
 	const [spreadsheetName, setSpreadsheetName] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState('')
+	const [error, setError] = useState(
+		'Something went wrong. Please try again.'
+	)
 	const [savedJob, setSavedJob] = useState(null)
 	const [showSettings, setShowSettings] = useState(false)
 
@@ -34,8 +37,7 @@ export default function Popup() {
 
 	return (
 		<div>
-			{error && <p style={{ color: 'red' }}>{error}</p>}
-			{loading && <p>Loading...</p>}
+			{loading && <Loader setShowSettings={setShowSettings} />}
 
 			{/* Not logged in: show Sign in button */}
 			{!isLoggedIn && !loading && (
@@ -43,6 +45,8 @@ export default function Popup() {
 					setLoading={setLoading}
 					setIsLoggedIn={setIsLoggedIn}
 					setError={setError}
+					error={error}
+					setShowSettings={setShowSettings}
 				/>
 			)}
 
@@ -55,6 +59,7 @@ export default function Popup() {
 					setError={setError}
 					setSpreadsheetId={setSpreadsheetId}
 					setShowSettings={setShowSettings}
+					error={error}
 				/>
 			)}
 
@@ -70,6 +75,7 @@ export default function Popup() {
 						setSpreadsheetId={setSpreadsheetId}
 						setSavedJob={setSavedJob}
 						setShowSettings={setShowSettings}
+						error={error}
 					/>
 				)}
 
@@ -81,6 +87,7 @@ export default function Popup() {
 					<JobSavedView
 						savedJob={savedJob}
 						spreadsheetId={spreadsheetId}
+						setShowSettings={setShowSettings}
 					/>
 				)}
 
@@ -90,6 +97,7 @@ export default function Popup() {
 					setSpreadsheetId={setSpreadsheetId}
 					setError={setError}
 					setShowSettings={setShowSettings}
+					error={error}
 				/>
 			)}
 		</div>

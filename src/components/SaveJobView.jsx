@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { handleCloseExtension, handleSaveJob } from '../utils/popupUtils'
 import { FaTimes, FaCog } from 'react-icons/fa'
+import ErrorMessageComponent from './ErrorMessage'
+import HeaderComponent from './HeaderComponent'
 
 const PopupContainer = styled.div`
 	width: 260px;
@@ -18,7 +20,8 @@ const PopupHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding-bottom: 10px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `
 
 const Logo = styled.div`
@@ -54,7 +57,6 @@ const IconButton = styled.button`
 const Heading = styled.h2`
 	font-size: 16px;
 	font-weight: bold;
-	margin-top: 10px;
 `
 
 const Subtext = styled.p`
@@ -83,28 +85,15 @@ export default function SaveJobView({
 	setError,
 	setSavedJob,
 	setShowSettings,
+	error,
 }) {
 	return (
 		<PopupContainer>
 			{/* Header */}
-			<PopupHeader>
-				<Logo>
-					<LogoImage
-						src='/logo.png'
-						alt='Job Seeker Logo'
-					/>
-					<span>Job Seeker</span>
-				</Logo>
-				<Actions>
-					<IconButton
-						onClick={() => setShowSettings((prev) => !prev)}>
-						<FaCog />
-					</IconButton>
-					<IconButton onClick={handleCloseExtension}>
-						<FaTimes />
-					</IconButton>
-				</Actions>
-			</PopupHeader>
+			<HeaderComponent
+				settingOption={true}
+				setShowSettings={setShowSettings}
+			/>
 
 			{/* Content */}
 			<Heading>
@@ -115,6 +104,8 @@ export default function SaveJobView({
 			<SaveButton onClick={() => handleSaveJob(setSavedJob, setError)}>
 				Save Job
 			</SaveButton>
+
+			<ErrorMessageComponent error={error} />
 		</PopupContainer>
 	)
 }

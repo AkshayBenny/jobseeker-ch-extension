@@ -2,6 +2,8 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { handleCloseExtension, handleLogin } from '../utils/popupUtils'
 import { FaTimes } from 'react-icons/fa'
+import ErrorMessageComponent from './ErrorMessage'
+import HeaderComponent from './HeaderComponent'
 
 // Keyframe animation for wave emoji
 const waveAnimation = keyframes`
@@ -20,48 +22,13 @@ const PopupContainer = styled.div`
 	text-align: center;
 `
 
-const PopupHeader = styled.header`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid #333;
-	padding-bottom: 10px;
-`
-
-const Logo = styled.div`
-	display: flex;
-	align-items: center;
-	font-weight: bold;
-	font-size: 14px;
-`
-
-const LogoImage = styled.img`
-	width: 20px;
-	height: 20px;
-	margin-right: 6px;
-`
-
-const CloseButton = styled.button`
-	background: none;
-	border: none;
-	color: #bbb;
-	cursor: pointer;
-	font-size: 14px;
-
-	&:hover {
-		color: red;
-	}
-`
-
 const PopupContent = styled.div`
 	text-align: center;
-	padding-top: 15px;
 `
 
 const WelcomeText = styled.h2`
 	font-size: 18px;
 	font-weight: bold;
-	margin-top: 10px;
 `
 
 const Wave = styled.span`
@@ -104,22 +71,16 @@ export default function NotLoggedInView({
 	setLoading,
 	setIsLoggedIn,
 	setError,
+	error,
+	setShowSettings,
 }) {
 	return (
 		<PopupContainer>
 			{/* Header */}
-			<PopupHeader>
-				<Logo>
-					<LogoImage
-						src='/logo-large.png'
-						alt='Job Seeker Logo'
-					/>
-					<span>Job Seeker</span>
-				</Logo>
-				<CloseButton onClick={handleCloseExtension}>
-					<FaTimes />
-				</CloseButton>
-			</PopupHeader>
+			<HeaderComponent
+				settingOption={false}
+				setShowSettings={setShowSettings}
+			/>
 
 			{/* Content */}
 			<PopupContent>
@@ -141,6 +102,7 @@ export default function NotLoggedInView({
 					Signup with Google
 				</GoogleButton>
 			</PopupContent>
+			<ErrorMessageComponent error={error} />
 		</PopupContainer>
 	)
 }

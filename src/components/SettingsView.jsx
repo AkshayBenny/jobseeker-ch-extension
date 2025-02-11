@@ -6,6 +6,8 @@ import {
 	handleCreateNewSheet,
 	handleLogout,
 } from '../utils/popupUtils'
+import ErrorMessageComponent from './ErrorMessage'
+import HeaderComponent from './HeaderComponent'
 
 const PopupContainer = styled.div`
 	width: 260px;
@@ -58,7 +60,6 @@ const IconButton = styled.button`
 const Heading = styled.h2`
 	font-size: 16px;
 	font-weight: bold;
-	margin-top: 10px;
 	text-align: start;
 `
 
@@ -114,28 +115,15 @@ export default function SettingsView({
 	setSpreadsheetId,
 	setError,
 	setShowSettings,
+	error,
 }) {
 	return (
 		<PopupContainer>
 			{/* Header */}
-			<PopupHeader>
-				<Logo>
-					<LogoImage
-						src='/logo.png'
-						alt='Job Seeker Logo'
-					/>
-					<span>Job Seeker</span>
-				</Logo>
-				<Actions>
-					<IconButton
-						onClick={() => setShowSettings((prev) => !prev)}>
-						<FaCog />
-					</IconButton>
-					<IconButton onClick={handleCloseExtension}>
-						<FaTimes />
-					</IconButton>
-				</Actions>
-			</PopupHeader>
+			<HeaderComponent
+				settingOption={true}
+				setShowSettings={setShowSettings}
+			/>
 
 			{/* Content */}
 			<Heading>Set up a new sheet?</Heading>
@@ -166,6 +154,7 @@ export default function SettingsView({
 				}>
 				Logout
 			</LogoutButton>
+			<ErrorMessageComponent error={error} />
 		</PopupContainer>
 	)
 }
