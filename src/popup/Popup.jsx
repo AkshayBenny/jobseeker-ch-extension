@@ -12,9 +12,10 @@ export default function Popup() {
 	const [spreadsheetId, setSpreadsheetId] = useState(null)
 	const [spreadsheetName, setSpreadsheetName] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState('')
+	const [error, setError] = useState(null)
 	const [savedJob, setSavedJob] = useState(null)
 	const [showSettings, setShowSettings] = useState(false)
+	const [firstView, setFirstView] = useState(false)
 
 	// When the component mounts, check if we already have a spreadsheetId stored.
 	useEffect(() => {
@@ -58,6 +59,7 @@ export default function Popup() {
 					setSpreadsheetId={setSpreadsheetId}
 					setShowSettings={setShowSettings}
 					error={error}
+					setFirstView={setFirstView}
 				/>
 			)}
 
@@ -74,6 +76,9 @@ export default function Popup() {
 						setSavedJob={setSavedJob}
 						setShowSettings={setShowSettings}
 						error={error}
+						firstView={firstView}
+						setFirstView={setFirstView}
+						spreadsheetName={spreadsheetName}
 					/>
 				)}
 

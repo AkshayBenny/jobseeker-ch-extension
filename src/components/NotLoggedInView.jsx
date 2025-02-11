@@ -1,7 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { handleCloseExtension, handleLogin } from '../utils/popupUtils'
-import { FaTimes } from 'react-icons/fa'
+import { handleLogin } from '../utils/popupUtils'
 import ErrorMessageComponent from './ErrorMessage'
 import HeaderComponent from './HeaderComponent'
 
@@ -17,7 +16,7 @@ const PopupContainer = styled.div`
 	background: #1e1e1e;
 	color: white;
 	/* border-radius: 12px; */
-	padding: 15px;
+	padding: 24px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
 `
@@ -37,9 +36,10 @@ const Wave = styled.span`
 `
 
 const Subtext = styled.p`
-	font-size: 13px;
+	font-size: 12px;
 	color: #aaa;
-	margin-bottom: 15px;
+	margin-bottom: 24px;
+	opacity: 0.8;
 `
 
 const GoogleButton = styled.button`

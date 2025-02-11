@@ -1,7 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FaTimes } from 'react-icons/fa'
-import { handleCloseExtension } from '../utils/popupUtils'
 import ErrorMessageComponent from './ErrorMessage'
 import HeaderComponent from './HeaderComponent'
 
@@ -9,27 +7,28 @@ const PopupContainer = styled.div`
 	width: 260px;
 	background: #1e1e1e;
 	color: white;
-	padding: 15px;
+	padding: 24px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 `
 
 const Heading = styled.h2`
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: bold;
 `
 
 const JobTable = styled.table`
 	width: 100%;
 	border-collapse: collapse;
-	margin: 10px 0;
+	margin: 16px 0px 24px 0px;
 `
 
 const JobRow = styled.tr``
 
 const PropertyCell = styled.td`
-	font-weight: bold;
+	font-weight: 600;
+	font-size: 12px;
 	color: white;
 	padding: 4px 8px;
 	white-space: nowrap;
@@ -38,12 +37,13 @@ const PropertyCell = styled.td`
 `
 
 const ValueCell = styled.td`
-	font-size: 13px;
-	color: #ddd;
+	font-size: 12px;
+	color: white;
 	padding: 4px 8px;
 	word-break: break-all;
 	text-align: start;
 	vertical-align: top; /* Align content to the top */
+	opacity: 0.8;
 `
 const TruncatedLink = styled.a`
 	color: #4c9aff;
@@ -65,7 +65,8 @@ const ViewSheetButton = styled.button`
 	width: 100%;
 	background: #ffffff;
 	color: #000;
-	font-weight: bold;
+	font-weight: 600;
+	font-size: 12px;
 	border: none;
 	padding: 10px;
 	border-radius: 8px;

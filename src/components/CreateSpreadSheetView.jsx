@@ -8,8 +8,7 @@ const PopupContainer = styled.div`
 	width: 260px;
 	background: #1e1e1e;
 	color: white;
-	/* border-radius: 12px; */
-	padding: 15px;
+	padding: 24px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -19,18 +18,19 @@ const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: start;
 `
 
 const Heading = styled.h2`
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: bold;
 `
 
 const Subtext = styled.p`
-	font-size: 13px;
+	font-size: 12px;
 	color: #aaa;
 	margin-bottom: 15px;
+	opacity: 0.8;
 `
 
 const InputField = styled.input`
@@ -53,10 +53,11 @@ const CreateButton = styled.button`
 	width: 100%;
 	background: #ffffff;
 	color: #000;
-	font-weight: bold;
+	font-weight: 600;
+	font-size: 12px;
 	border: none;
 	padding: 10px;
-	border-radius: 8px;
+	border-radius: 6px;
 	cursor: pointer;
 	transition: background 0.2s ease-in-out;
 
@@ -73,6 +74,7 @@ export default function CreateSpreadSheetView({
 	setSpreadsheetId,
 	error,
 	setShowSettings,
+	setFirstView
 }) {
 	return (
 		<PopupContainer>
@@ -103,7 +105,9 @@ export default function CreateSpreadSheetView({
 							spreadsheetName,
 							setLoading,
 							setError,
-							setSpreadsheetId
+							setSpreadsheetId,
+							setFirstView
+
 						)
 					}>
 					Create Sheet

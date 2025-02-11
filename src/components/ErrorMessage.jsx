@@ -15,9 +15,12 @@ const ErrorMessage = styled.p`
 `
 
 export default function ErrorMessageComponent({ error }) {
+	if (!error || error === '') return <></>
 	return (
 		<ErrorContainer>
 			<ErrorMessage>{error}</ErrorMessage>
 		</ErrorContainer>
 	)
 }
+
+// spacing issue under create google sheet heading view

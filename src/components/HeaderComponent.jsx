@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { handleCloseExtension } from '../utils/popupUtils'
-import { FaCog, FaTimes } from 'react-icons/fa'
 
 const PopupHeader = styled.div`
 	display: flex;
@@ -8,7 +7,6 @@ const PopupHeader = styled.div`
 	align-items: center;
 	padding-bottom: 16px;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 24px;
 `
 
 const Logo = styled.div`
@@ -44,6 +42,10 @@ const IconButton = styled.button`
 		color: red;
 	}
 `
+const ActionIcon = styled.img`
+	height: 14px;
+	width: 14px;
+`
 
 export default function HeaderComponent({ settingOption, setShowSettings }) {
 	return (
@@ -59,11 +61,11 @@ export default function HeaderComponent({ settingOption, setShowSettings }) {
 				{settingOption && (
 					<IconButton
 						onClick={() => setShowSettings((prev) => !prev)}>
-						<FaCog />
+						<ActionIcon src='/icons/settings.svg' />
 					</IconButton>
 				)}
 				<IconButton onClick={handleCloseExtension}>
-					<FaTimes />
+					<ActionIcon src='/icons/x.svg' />
 				</IconButton>
 			</Actions>
 		</PopupHeader>

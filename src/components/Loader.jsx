@@ -1,6 +1,4 @@
 import styled, { keyframes } from 'styled-components'
-import { handleCloseExtension } from '../utils/popupUtils'
-import { FaTimes } from 'react-icons/fa'
 import HeaderComponent from './HeaderComponent'
 
 const PopupContainer = styled.div`
@@ -8,7 +6,7 @@ const PopupContainer = styled.div`
 	background: #1e1e1e;
 	color: white;
 	/* border-radius: 12px; */
-	padding: 15px;
+	padding: 24px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
 `
@@ -52,7 +50,7 @@ export default function Loader({ setShowSettings }) {
 			/>
 			<PopupContent>
 				<SpinningImage
-					src='/logo-large.png'
+					src='/icons/loading.svg'
 					alt='Spinning Icon'
 				/>
 				<LoadingText>Loading...</LoadingText>

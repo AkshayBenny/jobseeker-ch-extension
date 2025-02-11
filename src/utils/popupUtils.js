@@ -24,7 +24,8 @@ const handleCreateSpreadsheet = (
 	spreadsheetName,
 	setLoading,
 	setError,
-	setSpreadsheetId
+	setSpreadsheetId,
+	setFirstView
 ) => {
 	if (!spreadsheetName) {
 		setError('Please enter a spreadsheet name.')
@@ -108,6 +109,7 @@ const handleCreateSpreadsheet = (
 						() => {
 							setSpreadsheetId(data.spreadsheetId)
 							setLoading(false)
+							setFirstView(true)
 						}
 					)
 				} else {
@@ -123,7 +125,7 @@ const handleCreateSpreadsheet = (
 }
 
 // Save job details (calls the background script to append job info)
-const handleSaveJob = (setSavedJob, setError) => {
+const handleSaveJob = (setSavedJob, setError, setFirstView) => {
 	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 		chrome.tabs.sendMessage(
 			tabs[0].id,
@@ -138,6 +140,7 @@ const handleSaveJob = (setSavedJob, setError) => {
 					(response) => {
 						if (response && response.status === 'success') {
 							setSavedJob(jobDetails)
+							setFirstView(false)
 						} else {
 							setError('Failed to save job.')
 						}
