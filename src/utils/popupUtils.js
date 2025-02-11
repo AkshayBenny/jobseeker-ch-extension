@@ -141,7 +141,6 @@ const handleSaveJob = (setSavedJob, setError) => {
 					(response) => {
 						if (response && response.status === 'success') {
 							setSavedJob(jobDetails)
-							console.error(jobDetails)
 						} else {
 							setError('Failed to save job.')
 						}

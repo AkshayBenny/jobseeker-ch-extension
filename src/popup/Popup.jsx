@@ -33,8 +33,7 @@ export default function Popup() {
 	}, [])
 
 	return (
-		<div style={{ padding: '10px', fontFamily: 'Arial, sans-serif' }}>
-			<h2>Job Seeker Extension</h2>
+		<div>
 			{error && <p style={{ color: 'red' }}>{error}</p>}
 			{loading && <p>Loading...</p>}
 
