@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { FaTimes } from 'react-icons/fa'
+import { handleCloseExtension } from '../utils/popupUtils'
 
 const PopupContainer = styled.div`
 	width: 260px;
 	background: #1e1e1e;
 	color: white;
-	border-radius: 12px;
+	/* border-radius: 12px; */
 	padding: 15px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
@@ -61,6 +62,9 @@ const JobDetails = styled.div`
 const DetailRow = styled.p`
 	margin: 5px 0;
 	font-size: 13px;
+	display: flex;
+	align-items: center;
+	justify-content: start;
 
 	strong {
 		font-weight: bold;
@@ -120,7 +124,7 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 					/>
 					<span>Job Seeker</span>
 				</Logo>
-				<CloseButton>
+				<CloseButton onClick={handleCloseExtension}>
 					<FaTimes />
 				</CloseButton>
 			</PopupHeader>
@@ -137,9 +141,9 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 				<DetailRow>
 					<strong>Job Title :</strong> {jobTitle}
 				</DetailRow>
-				<DetailRow>
+				{/* <DetailRow>
 					<strong>Deadline :</strong> {deadline}
-				</DetailRow>
+				</DetailRow> */}
 				<DetailRow>
 					<strong>Apply Link :</strong>{' '}
 					<TruncatedLink

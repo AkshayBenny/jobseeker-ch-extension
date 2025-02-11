@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { handleLogin } from '../utils/popupUtils'
+import { handleCloseExtension, handleLogin } from '../utils/popupUtils'
 import { FaTimes } from 'react-icons/fa'
 
 // Keyframe animation for wave emoji
@@ -116,7 +116,7 @@ export default function NotLoggedInView({
 					/>
 					<span>Job Seeker</span>
 				</Logo>
-				<CloseButton>
+				<CloseButton onClick={handleCloseExtension}>
 					<FaTimes />
 				</CloseButton>
 			</PopupHeader>

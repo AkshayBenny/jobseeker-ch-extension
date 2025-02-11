@@ -4,16 +4,16 @@ import NotLoggedInView from '../components/NotLoggedInView'
 import SaveJobView from '../components/SaveJobView'
 import CreateSpreadSheetView from '../components/CreateSpreadSheetView'
 import JobSavedView from '../components/JobSavedView'
+import SettingsView from '../components/SettingsView'
 
 export default function Popup() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
 	const [spreadsheetId, setSpreadsheetId] = useState(null)
-	const [spreadsheetName, setSpreadsheetName] = useState(
-		'My Job Applications'
-	)
+	const [spreadsheetName, setSpreadsheetName] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
 	const [savedJob, setSavedJob] = useState(null)
+	const [showSettings, setShowSettings] = useState(false)
 
 	// When the component mounts, check if we already have a spreadsheetId stored.
 	useEffect(() => {
@@ -47,30 +47,49 @@ export default function Popup() {
 			)}
 
 			{/* Logged in but no spreadsheet created: show create spreadsheet UI */}
-			{isLoggedIn && !spreadsheetId && !loading && (
+			{isLoggedIn && !spreadsheetId && !loading && !showSettings && (
 				<CreateSpreadSheetView
 					spreadsheetName={spreadsheetName}
 					setSpreadsheetName={setSpreadsheetName}
 					setLoading={setLoading}
 					setError={setError}
 					setSpreadsheetId={setSpreadsheetId}
+					setShowSettings={setShowSettings}
 				/>
 			)}
 
 			{/* Logged in and spreadsheet exists: show Save Job and Logout buttons */}
-			{isLoggedIn && spreadsheetId && !savedJob && !loading && (
-				<SaveJobView
-					setError={setError}
+			{isLoggedIn &&
+				spreadsheetId &&
+				!savedJob &&
+				!loading &&
+				!showSettings && (
+					<SaveJobView
+						setError={setError}
+						setIsLoggedIn={setIsLoggedIn}
+						setSpreadsheetId={setSpreadsheetId}
+						setSavedJob={setSavedJob}
+						setShowSettings={setShowSettings}
+					/>
+				)}
+
+			{isLoggedIn &&
+				spreadsheetId &&
+				savedJob &&
+				!loading &&
+				!showSettings && (
+					<JobSavedView
+						savedJob={savedJob}
+						spreadsheetId={spreadsheetId}
+					/>
+				)}
+
+			{showSettings && !loading && (
+				<SettingsView
 					setIsLoggedIn={setIsLoggedIn}
 					setSpreadsheetId={setSpreadsheetId}
-					setSavedJob={setSavedJob}
-				/>
-			)}
-
-			{isLoggedIn && spreadsheetId && savedJob && !loading && (
-				<JobSavedView
-					savedJob={savedJob}
-					spreadsheetId={spreadsheetId}
+					setError={setError}
+					setShowSettings={setShowSettings}
 				/>
 			)}
 		</div>

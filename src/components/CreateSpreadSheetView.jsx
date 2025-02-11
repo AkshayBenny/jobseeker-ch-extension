@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import { handleCreateSpreadsheet } from '../utils/popupUtils'
+import {
+	handleCloseExtension,
+	handleCreateSpreadsheet,
+} from '../utils/popupUtils'
 import { FaTimes } from 'react-icons/fa'
 
 const PopupContainer = styled.div`
 	width: 260px;
 	background: #1e1e1e;
 	color: white;
-	border-radius: 12px;
+	/* border-radius: 12px; */
 	padding: 15px;
 	font-family: 'Inter', sans-serif;
 	text-align: center;
@@ -46,6 +49,13 @@ const CloseButton = styled.button`
 	}
 `
 
+const ContentContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`
+
 const Heading = styled.h2`
 	font-size: 16px;
 	font-weight: bold;
@@ -65,7 +75,7 @@ const InputField = styled.input`
 	border: 1px solid #555;
 	background: #2a2a2a;
 	color: white;
-	font-size: 14px;
+	font-size: 12px;
 	margin-bottom: 12px;
 	outline: none;
 
@@ -108,35 +118,38 @@ export default function CreateSpreadSheetView({
 					/>
 					<span>Job Seeker</span>
 				</Logo>
-				<CloseButton>
+				<CloseButton onClick={handleCloseExtension}>
 					<FaTimes />
 				</CloseButton>
 			</PopupHeader>
 
 			{/* Content */}
-			<Heading>Create a Google Sheet</Heading>
-			<Subtext>
-				Set up a sheet to save and track your jobs in a single click.
-			</Subtext>
+			<ContentContainer>
+				<Heading>Create a Google Sheet</Heading>
+				<Subtext>
+					Set up a sheet to save and track your jobs in a single
+					click.
+				</Subtext>
 
-			<InputField
-				type='text'
-				value={spreadsheetName}
-				onChange={(e) => setSpreadsheetName(e.target.value)}
-				placeholder='Enter Sheet Name*'
-			/>
+				<InputField
+					type='text'
+					value={spreadsheetName}
+					onChange={(e) => setSpreadsheetName(e.target.value)}
+					placeholder='Enter Sheet Name*'
+				/>
 
-			<CreateButton
-				onClick={() =>
-					handleCreateSpreadsheet(
-						spreadsheetName,
-						setLoading,
-						setError,
-						setSpreadsheetId
-					)
-				}>
-				Create Sheet
-			</CreateButton>
+				<CreateButton
+					onClick={() =>
+						handleCreateSpreadsheet(
+							spreadsheetName,
+							setLoading,
+							setError,
+							setSpreadsheetId
+						)
+					}>
+					Create Sheet
+				</CreateButton>
+			</ContentContainer>
 		</PopupContainer>
 	)
 }

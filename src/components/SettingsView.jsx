@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { handleCloseExtension, handleSaveJob } from '../utils/popupUtils'
 import { FaTimes, FaCog } from 'react-icons/fa'
+import { handleCloseExtension, handleCreateNewSheet, handleLogout } from '../utils/popupUtils'
 
 const PopupContainer = styled.div`
 	width: 260px;
@@ -55,12 +55,14 @@ const Heading = styled.h2`
 	font-size: 16px;
 	font-weight: bold;
 	margin-top: 10px;
+	text-align: start;
 `
 
 const Subtext = styled.p`
 	font-size: 13px;
 	color: #aaa;
 	margin-bottom: 15px;
+	text-align: start;
 `
 
 const SaveButton = styled.button`
@@ -79,9 +81,34 @@ const SaveButton = styled.button`
 	}
 `
 
-export default function SaveJobView({
+const WarningText = styled.p`
+	font-size: 13px;
+	color: #aaa;
+	margin-bottom: 16px;
+	margin-top: 24px;
+	text-align: start;
+`
+const LogoutButton = styled.button`
+	width: 100%;
+	background: transparent;
+	color: #ff6363;
+	font-weight: bold;
+	border: 1.5px solid #ff6363;
+	padding: 10px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.2s ease-in-out;
+
+	&:hover {
+		background: #ff6363;
+		color: #ffffff;
+	}
+`
+
+export default function SettingsView({
+	setIsLoggedIn,
+	setSpreadsheetId,
 	setError,
-	setSavedJob,
 	setShowSettings,
 }) {
 	return (
@@ -107,22 +134,29 @@ export default function SaveJobView({
 			</PopupHeader>
 
 			{/* Content */}
-			<Heading>
-				Sheet Created <span>🎉</span>
-			</Heading>
-			<Subtext>Start saving jobs with a single click.</Subtext>
-
-			<SaveButton onClick={() => handleSaveJob(setSavedJob, setError)}>
-				Save Job
+			<Heading>Set up a new sheet?</Heading>
+			<Subtext>Your previous sheet won&apos;t be used anymore.</Subtext>
+			<SaveButton
+				onClick={() =>
+					handleCreateNewSheet(
+						setSpreadsheetId,
+						setError,
+						setShowSettings
+					)
+				}>
+				Create New Sheet
 			</SaveButton>
-		</PopupContainer>
-	)
-}
-{
-	/* <button
+
+			<WarningText>
+				Warning: Logging out will disable job saving. You can log in
+				anytime to continue.
+			</WarningText>
+			<LogoutButton
 				onClick={() =>
 					handleLogout(setIsLoggedIn, setSpreadsheetId, setError)
 				}>
 				Logout
-			</button> */
+			</LogoutButton>
+		</PopupContainer>
+	)
 }

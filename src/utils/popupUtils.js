@@ -26,8 +26,13 @@ const handleCreateSpreadsheet = (
 	setError,
 	setSpreadsheetId
 ) => {
+	if (!spreadsheetName) {
+		setError('Please enter a spreadsheet name.')
+		return
+	}
 	setLoading(true)
 	chrome.identity.getAuthToken({ interactive: false }, (token) => {
+		setError('')
 		if (chrome.runtime.lastError || !token) {
 			setError('Failed to retrieve auth token.')
 			setLoading(false)
@@ -169,4 +174,25 @@ const handleLogout = (setIsLoggedIn, setSpreadsheetId, setError) => {
 	})
 }
 
-export { handleLogin, handleCreateSpreadsheet, handleSaveJob, handleLogout }
+const handleCreateNewSheet = (setSpreadsheetId, setError, setShowSettings) => {
+	try {
+		setSpreadsheetId(null)
+		chrome.storage.sync.remove('spreadsheetId')
+		setShowSettings(false)
+	} catch (error) {
+		setError('Something went wrong!')
+	}
+}
+
+const handleCloseExtension = () => {
+	window.close()
+}
+
+export {
+	handleLogin,
+	handleCreateSpreadsheet,
+	handleSaveJob,
+	handleLogout,
+	handleCreateNewSheet,
+	handleCloseExtension,
+}
