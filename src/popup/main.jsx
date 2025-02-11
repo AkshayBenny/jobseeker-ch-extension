@@ -11,4 +11,6 @@ root.render(
 )
 
 
-// 
+// padding issue for the header
+// after create sheet, upon closing the extension, the default view should be save job view
+// save sheetname to localstorage

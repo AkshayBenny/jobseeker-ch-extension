@@ -74,13 +74,13 @@ export default function CreateSpreadSheetView({
 	setSpreadsheetId,
 	error,
 	setShowSettings,
-	setFirstView
+	setFirstView,
 }) {
 	return (
 		<PopupContainer>
 			{/* Header */}
 			<HeaderComponent
-				settingOption={false}
+				settingOption={true}
 				setShowSettings={setShowSettings}
 			/>
 
@@ -106,8 +106,8 @@ export default function CreateSpreadSheetView({
 							setLoading,
 							setError,
 							setSpreadsheetId,
-							setFirstView
-
+							setFirstView,
+							setSpreadsheetName
 						)
 					}>
 					Create Sheet

@@ -25,7 +25,8 @@ const handleCreateSpreadsheet = (
 	setLoading,
 	setError,
 	setSpreadsheetId,
-	setFirstView
+	setFirstView,
+	setSpreadsheetName
 ) => {
 	if (!spreadsheetName) {
 		setError('Please enter a spreadsheet name.')
@@ -110,6 +111,7 @@ const handleCreateSpreadsheet = (
 							setSpreadsheetId(data.spreadsheetId)
 							setLoading(false)
 							setFirstView(true)
+							setSpreadsheetName(null)
 						}
 					)
 				} else {

@@ -69,7 +69,7 @@ const ViewSheetButton = styled.button`
 	font-size: 12px;
 	border: none;
 	padding: 10px;
-	border-radius: 8px;
+	border-radius: 6px;
 	cursor: pointer;
 	transition: background 0.2s ease-in-out;
 
@@ -97,7 +97,7 @@ export default function JobSavedView({
 		<PopupContainer>
 			{/* Header */}
 			<HeaderComponent
-				settingOption={false}
+				settingOption={true}
 				setShowSettings={setShowSettings}
 			/>
 
