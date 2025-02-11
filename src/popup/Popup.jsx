@@ -12,9 +12,7 @@ export default function Popup() {
 	const [spreadsheetId, setSpreadsheetId] = useState(null)
 	const [spreadsheetName, setSpreadsheetName] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState(
-		'Something went wrong. Please try again.'
-	)
+	const [error, setError] = useState('')
 	const [savedJob, setSavedJob] = useState(null)
 	const [showSettings, setShowSettings] = useState(false)
 
