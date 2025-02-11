@@ -95,10 +95,71 @@ const handleCreateSpreadsheet = (
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.spreadsheetId) {
+					// Store the spreadsheet ID and then apply banding to the header range.
 					chrome.storage.sync.set(
 						{ spreadsheetId: data.spreadsheetId },
 						() => {
 							setSpreadsheetId(data.spreadsheetId)
+							// Now add banding (table formatting) using batchUpdate.
+							fetch(
+								`https://sheets.googleapis.com/v4/spreadsheets/${data.spreadsheetId}:batchUpdate`,
+								{
+									method: 'POST',
+									headers: {
+										Authorization: 'Bearer ' + token,
+										'Content-Type': 'application/json',
+									},
+									body: JSON.stringify({
+										requests: [
+											{
+												addBanding: {
+													bandedRange: {
+														range: {
+															sheetId: 0, // Typically the first sheet’s ID is 0.
+															startRowIndex: 0, // Start at row 0 (the header row)
+															endRowIndex: 10, // For example, pre-format rows 0-9. Adjust as needed.
+															startColumnIndex: 0,
+															endColumnIndex: 3, // For 3 columns
+														},
+														rowProperties: {
+															// Format for the header row:
+															headerColor: {
+																red: 0.8,
+																green: 0.8,
+																blue: 0.8,
+																alpha: 1,
+															},
+															// Colors for alternating rows:
+															firstBandColor: {
+																red: 1,
+																green: 1,
+																blue: 1,
+																alpha: 1,
+															},
+															secondBandColor: {
+																red: 0.95,
+																green: 0.95,
+																blue: 0.95,
+																alpha: 1,
+															},
+														},
+													},
+												},
+											},
+										],
+									}),
+								}
+							)
+								.then((res) => res.json())
+								.then((result) =>
+									console.log('Banded range created:', result)
+								)
+								.catch((error) =>
+									console.error(
+										'Error applying banding:',
+										error
+									)
+								)
 							setLoading(false)
 						}
 					)
