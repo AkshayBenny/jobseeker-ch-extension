@@ -113,7 +113,7 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 		return <p>No job details available.</p>
 	}
 
-	const { company, jobTitle, applyLink } = savedJob
+	const { company, jobTitle, deadline, applyLink } = savedJob
 	const sheetUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`
 	const truncatedApplyLink =
 		applyLink.length > 30 ? `${applyLink.substring(0, 30)}...` : applyLink
@@ -150,6 +150,11 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 						<PropertyCell>Job Title</PropertyCell>
 						<PropertyCell>:</PropertyCell>
 						<ValueCell>{jobTitle}</ValueCell>
+					</JobRow>
+					<JobRow>
+						<PropertyCell>Deadline</PropertyCell>
+						<PropertyCell>:</PropertyCell>
+						<ValueCell>Not found</ValueCell>
 					</JobRow>
 					<JobRow>
 						<PropertyCell>Apply Link</PropertyCell>
