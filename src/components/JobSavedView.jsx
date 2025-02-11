@@ -154,7 +154,7 @@ export default function JobSavedView({ savedJob, spreadsheetId }) {
 					<JobRow>
 						<PropertyCell>Deadline</PropertyCell>
 						<PropertyCell>:</PropertyCell>
-						<ValueCell>Not found</ValueCell>
+						<ValueCell>{deadline}</ValueCell>
 					</JobRow>
 					<JobRow>
 						<PropertyCell>Apply Link</PropertyCell>

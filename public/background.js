@@ -46,6 +46,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 										[
 											jobData.company,
 											jobData.jobTitle,
+											jobData.deadline,
 											jobData.applyLink,
 										],
 									],
