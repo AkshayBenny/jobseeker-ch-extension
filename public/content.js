@@ -184,7 +184,7 @@ async function extractJobDetails() {
 		}
 	}
 
-	return { jobTitle, company, applyLink }
+	return { jobTitle, company, deadline, applyLink }
 }
 
 // Listen for messages from the popup
