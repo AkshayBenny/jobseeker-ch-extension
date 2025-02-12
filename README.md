@@ -49,6 +49,7 @@ Follow these steps to run the extension locally:
 
 ## Additional Resources
 
-    1. [Homepage](https://akshaybenny.github.io/jobseeker-ch-extension/homepage.html)
-    2. [Terms and Conditions](https://akshaybenny.github.io/jobseeker-ch-extension/terms-and-conditions.html)
-    3. [Privacy Policy](https://akshaybenny.github.io/jobseeker-ch-extension/privacy-policy.html)
+-   [Homepage](https://akshaybenny.github.io/jobseeker-ch-extension/homepage.html)
+
+-   [Terms and Conditions](https://akshaybenny.github.io/jobseeker-ch-extension/terms-and-conditions.html)
+-   [Privacy Policy](https://akshaybenny.github.io/jobseeker-ch-extension/privacy-policy.html)
