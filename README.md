@@ -15,7 +15,7 @@ Follow these steps to run the extension locally:
 
 1.  **Clone or Download the Repository:**
     ```bash
-    git clone https://github.com/your-username/jobseeker-ch-extension.git
+    git clone https://github.com/akshaybenny/jobseeker-ch-extension.git
     cd jobseeker-ch-extension
     ```
 2.  **Configure OAuth Client:**
