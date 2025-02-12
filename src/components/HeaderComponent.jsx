@@ -9,15 +9,23 @@ const PopupHeader = styled.div`
 	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 `
 
+const LogoLink = styled.a`
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+`
+
 const Logo = styled.div`
 	display: flex;
 	align-items: center;
 	font-weight: bold;
 	font-size: 14px;
 `
+
 const HeaderText = styled.p`
 	font-size: 14px;
 	font-weight: 600;
+	margin: 0;
 `
 
 const LogoImage = styled.img`
@@ -42,6 +50,7 @@ const IconButton = styled.button`
 		color: red;
 	}
 `
+
 const ActionIcon = styled.img`
 	height: 14px;
 	width: 14px;
@@ -50,13 +59,18 @@ const ActionIcon = styled.img`
 export default function HeaderComponent({ settingOption, setShowSettings }) {
 	return (
 		<PopupHeader>
-			<Logo>
-				<LogoImage
-					src='/logo.png'
-					alt='Job Seeker Logo'
-				/>
-				<HeaderText>Job Seeker</HeaderText>
-			</Logo>
+			{/* Wrap Logo in an anchor link */}
+			<LogoLink
+				href='https://akshaybenny.github.io/jobseeker-ch-extension/homepage.html'
+				target='_blank'>
+				<Logo>
+					<LogoImage
+						src='/logo.png'
+						alt='Job Seeker Logo'
+					/>
+					<HeaderText>Job Seeker</HeaderText>
+				</Logo>
+			</LogoLink>
 			<Actions>
 				{settingOption && (
 					<IconButton
