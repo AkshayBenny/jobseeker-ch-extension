@@ -20,8 +20,8 @@ Follow these steps to run the extension locally:
     ```
 2.  **Configure OAuth Client:**
 
-        * Ensure you have set up an OAuth client in the Google Cloud Console.
-        * Update the client_id field in manifest.json with your actual OAuth client ID:
+    -   Ensure you have set up an OAuth client in the Google Cloud Console.
+    -   Update the client_id field in manifest.json with your actual OAuth client ID:
 
     ```bash
     "oauth2": {
@@ -49,6 +49,6 @@ Follow these steps to run the extension locally:
 
 ## Additional Resources
 
-    * [Homepage](https://akshaybenny.github.io/jobseeker-ch-extension/homepage.html)
-    * [Terms and Conditions](https://akshaybenny.github.io/jobseeker-ch-extension/terms-and-conditions.html)
-    * [Privacy Policy](https://akshaybenny.github.io/jobseeker-ch-extension/privacy-policy.html)
+    - [Homepage](https://akshaybenny.github.io/jobseeker-ch-extension/homepage.html)
+    - [Terms and Conditions](https://akshaybenny.github.io/jobseeker-ch-extension/terms-and-conditions.html)
+    - [Privacy Policy](https://akshaybenny.github.io/jobseeker-ch-extension/privacy-policy.html)
