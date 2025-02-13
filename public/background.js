@@ -1,6 +1,5 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === 'saveJob') {
-		// Retrieve the user's spreadsheet ID from storage
 		chrome.storage.sync.get('spreadsheetId', (result) => {
 			const spreadsheetId = result.spreadsheetId
 			if (!spreadsheetId) {
@@ -14,7 +13,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 				return
 			}
 
-			// Get OAuth token (interactive if needed)
 			chrome.identity.getAuthToken(
 				{ interactive: true },
 				async (token) => {
@@ -30,9 +28,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 						return
 					}
 
-					// Append the job data to the user's spreadsheet using the Sheets API
 					const jobData = message.data
 					try {
+						// We can still use the Sheets API to append data to the file we created.
 						const response = await fetch(
 							`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/A1:append?valueInputOption=USER_ENTERED`,
 							{
@@ -66,7 +64,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 				}
 			)
 		})
-		// Return true to indicate asynchronous response
-		return true
+		return true // Asynchronous response
 	}
 })

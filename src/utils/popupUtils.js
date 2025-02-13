@@ -1,5 +1,5 @@
 // Sign in with Google
-const handleLogin = (setLoading, setIsLoggedIn, setError) => {
+const handleLogin = (setLoading, setIsLoggedIn, setError, setSpreadsheetId) => {
 	setLoading(true)
 	chrome.identity.getAuthToken({ interactive: true }, (token) => {
 		if (chrome.runtime.lastError || !token) {
@@ -10,7 +10,7 @@ const handleLogin = (setLoading, setIsLoggedIn, setError) => {
 		}
 		setIsLoggedIn(true)
 		setLoading(false)
-		// Optionally, you can re-check storage here in case the spreadsheet was already created.
+		// Optionally, re-check storage to get spreadsheetId if already created
 		chrome.storage.sync.get('spreadsheetId', (result) => {
 			if (result.spreadsheetId) {
 				setSpreadsheetId(result.spreadsheetId)
@@ -19,7 +19,7 @@ const handleLogin = (setLoading, setIsLoggedIn, setError) => {
 	})
 }
 
-// Create a new spreadsheet (with an option to rename)
+// Create a new spreadsheet using Drive API
 const handleCreateSpreadsheet = (
 	spreadsheetName,
 	setLoading,
@@ -40,80 +40,28 @@ const handleCreateSpreadsheet = (
 			setLoading(false)
 			return
 		}
-		fetch('https://sheets.googleapis.com/v4/spreadsheets', {
+		// Use Drive API to create a new Google Sheet file
+		fetch('https://www.googleapis.com/drive/v3/files', {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				properties: { title: spreadsheetName },
-				sheets: [
-					{
-						properties: {
-							title: 'Sheet1',
-							gridProperties: { frozenRowCount: 1 },
-						},
-						data: [
-							{
-								startRow: 0,
-								startColumn: 0,
-								rowData: [
-									{
-										values: [
-											{
-												userEnteredValue: {
-													stringValue: 'Company Name',
-												},
-												userEnteredFormat: {
-													textFormat: { bold: true },
-												},
-											},
-											{
-												userEnteredValue: {
-													stringValue: 'Job Title',
-												},
-												userEnteredFormat: {
-													textFormat: { bold: true },
-												},
-											},
-											{
-												userEnteredValue: {
-													stringValue: 'Deadline',
-												},
-												userEnteredFormat: {
-													textFormat: { bold: true },
-												},
-											},
-											{
-												userEnteredValue: {
-													stringValue: 'Apply Link',
-												},
-												userEnteredFormat: {
-													textFormat: { bold: true },
-												},
-											},
-										],
-									},
-								],
-							},
-						],
-					},
-				],
+				name: spreadsheetName,
+				mimeType: 'application/vnd.google-apps.spreadsheet',
 			}),
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.spreadsheetId) {
-					chrome.storage.sync.set(
-						{ spreadsheetId: data.spreadsheetId },
-						() => {
-							setSpreadsheetId(data.spreadsheetId)
-							setLoading(false)
-							setFirstView(true)
-							setSpreadsheetName(null)
-						}
-					)
+				if (data.id) {
+					// Store the file ID as spreadsheetId
+					chrome.storage.sync.set({ spreadsheetId: data.id }, () => {
+						setSpreadsheetId(data.id)
+						setLoading(false)
+						setFirstView(true)
+						setSpreadsheetName('')
+					})
 				} else {
 					setError('Error creating spreadsheet.')
 					setLoading(false)
@@ -126,7 +74,8 @@ const handleCreateSpreadsheet = (
 	})
 }
 
-// Save job details (calls the background script to append job info)
+// Save job details: This function sends a message to the background script
+// which uses the Sheets API to append data.
 const handleSaveJob = (setSavedJob, setError, setFirstView) => {
 	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 		chrome.tabs.sendMessage(
@@ -177,6 +126,7 @@ const handleLogout = (
 	})
 }
 
+// Handle creating a new sheet by removing the old one
 const handleCreateNewSheet = (setSpreadsheetId, setError, setShowSettings) => {
 	try {
 		setSpreadsheetId(null)
@@ -187,6 +137,7 @@ const handleCreateNewSheet = (setSpreadsheetId, setError, setShowSettings) => {
 	}
 }
 
+// Close the extension window
 const handleCloseExtension = () => {
 	window.close()
 }
