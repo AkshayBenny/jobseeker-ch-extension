@@ -61,7 +61,7 @@ export default function HeaderComponent({ settingOption, setShowSettings }) {
 		<PopupHeader>
 			{/* Wrap Logo in an anchor link */}
 			<LogoLink
-				href='https://akshaybenny.github.io/jobseeker-ch-extension/homepage.html'
+				href='https://akshaybenny.github.io/jobseeker-ch-extension/'
 				target='_blank'>
 				<Logo>
 					<LogoImage
