@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Job Seeker",
-	"version": "1.0",
+	"version": "1.0.1",
 	"description": "Extract job details and save to Google Sheets",
 	"icons": {
 		"16": "logo.png",
@@ -15,7 +15,7 @@
 			"https://www.googleapis.com/auth/userinfo.email"
 		]
 	},
-	"permissions": ["identity", "storage", "scripting", "activeTab", "tabs"],
+	"permissions": ["identity", "storage", "activeTab"],
 	"host_permissions": ["https://*/*"],
 	"background": {
 		"service_worker": "background.js"

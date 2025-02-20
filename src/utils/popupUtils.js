@@ -33,45 +33,156 @@ const handleCreateSpreadsheet = (
 		return
 	}
 	setLoading(true)
-	chrome.identity.getAuthToken({ interactive: false }, (token) => {
-		setError('')
-		if (chrome.runtime.lastError || !token) {
-			setError('Failed to retrieve auth token.')
-			setLoading(false)
-			return
+
+	// First, remove any cached token to force a reauthorization with the new scope.
+	chrome.identity.getAuthToken({ interactive: false }, (oldToken) => {
+		if (oldToken) {
+			chrome.identity.removeCachedAuthToken({ token: oldToken }, () => {
+				getNewToken()
+			})
+		} else {
+			getNewToken()
 		}
-		// Use Drive API to create a new Google Sheet file
-		fetch('https://www.googleapis.com/drive/v3/files', {
-			method: 'POST',
-			headers: {
-				Authorization: 'Bearer ' + token,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				name: spreadsheetName,
-				mimeType: 'application/vnd.google-apps.spreadsheet',
-			}),
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.id) {
-					// Store the file ID as spreadsheetId
-					chrome.storage.sync.set({ spreadsheetId: data.id }, () => {
-						setSpreadsheetId(data.id)
-						setLoading(false)
-						setFirstView(true)
-						setSpreadsheetName('')
-					})
-				} else {
-					setError('Error creating spreadsheet.')
-					setLoading(false)
-				}
-			})
-			.catch((err) => {
-				setError(err.toString())
-				setLoading(false)
-			})
 	})
+
+	function getNewToken() {
+		chrome.identity.getAuthToken({ interactive: true }, (token) => {
+			if (chrome.runtime.lastError || !token) {
+				setError(
+					'Failed to retrieve auth token: ' +
+						(chrome.runtime.lastError
+							? chrome.runtime.lastError.message
+							: '')
+				)
+				setLoading(false)
+				return
+			}
+
+			// Create a new Google Sheet using the Drive API.
+			fetch('https://www.googleapis.com/drive/v3/files?fields=id', {
+				method: 'POST',
+				headers: {
+					Authorization: 'Bearer ' + token,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					name: spreadsheetName,
+					mimeType: 'application/vnd.google-apps.spreadsheet',
+				}),
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					if (data.id) {
+						const spreadsheetId = data.id
+						// Set the header row values using the Sheets API.
+						fetch(
+							`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Sheet1!A1:D1?valueInputOption=USER_ENTERED`,
+							{
+								method: 'PUT',
+								headers: {
+									Authorization: 'Bearer ' + token,
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify({
+									values: [
+										[
+											'Company',
+											'Job Title',
+											'Deadline',
+											'Apply Link',
+										],
+									],
+								}),
+							}
+						)
+							.then((res) => res.json())
+							.then((updateResult) => {
+								// Now update the sheet formatting: freeze the first row and make header texts bold.
+								const requests = [
+									{
+										repeatCell: {
+											range: {
+												sheetId: 0, // assuming your first (and default) sheet has ID 0
+												startRowIndex: 0,
+												endRowIndex: 1,
+											},
+											cell: {
+												userEnteredFormat: {
+													textFormat: {
+														bold: true,
+													},
+												},
+											},
+											fields: 'userEnteredFormat.textFormat.bold',
+										},
+									},
+									{
+										updateSheetProperties: {
+											properties: {
+												sheetId: 0,
+												gridProperties: {
+													frozenRowCount: 1,
+												},
+											},
+											fields: 'gridProperties.frozenRowCount',
+										},
+									},
+								]
+
+								fetch(
+									`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`,
+									{
+										method: 'POST',
+										headers: {
+											Authorization: 'Bearer ' + token,
+											'Content-Type': 'application/json',
+										},
+										body: JSON.stringify({
+											requests: requests,
+										}),
+									}
+								)
+									.then((res) => res.json())
+									.then((batchResult) => {
+										chrome.storage.sync.set(
+											{ spreadsheetId: spreadsheetId },
+											() => {
+												setSpreadsheetId(spreadsheetId)
+												setLoading(false)
+												setFirstView(true)
+												setSpreadsheetName('')
+											}
+										)
+									})
+									.catch((err) => {
+										setError(
+											'Error formatting spreadsheet: ' +
+												err.toString()
+										)
+										setLoading(false)
+									})
+							})
+							.catch((err) => {
+								setError(
+									'Error setting header values: ' +
+										err.toString()
+								)
+								setLoading(false)
+							})
+					} else {
+						setError(
+							'Error creating spreadsheet: ' +
+								JSON.stringify(data)
+						)
+						setLoading(false)
+					}
+				})
+				.catch((err) => {
+					setError('Error creating spreadsheet: ' + err.toString())
+					setLoading(false)
+				})
+		})
+	}
 }
 
 // Save job details: This function sends a message to the background script
