@@ -213,7 +213,6 @@ const handleSaveJob = (setSavedJob, setError, setFirstView) => {
 	})
 }
 
-// Logout and revoke the Google token
 const handleLogout = (
 	setIsLoggedIn,
 	setSpreadsheetId,
@@ -227,8 +226,6 @@ const handleLogout = (
 				chrome.identity.removeCachedAuthToken({ token: token }, () => {
 					setIsLoggedIn(false)
 					setShowSettings(false)
-					setSpreadsheetId(null)
-					chrome.storage.sync.remove('spreadsheetId')
 				})
 			})
 			.catch((err) => {
